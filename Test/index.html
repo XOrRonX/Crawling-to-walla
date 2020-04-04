@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="windows-1255">
+    <title>Title</title>
+
+    <!--bootstrap-->
+    <script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!--bootstrap-->
+
+   <style>
+        body {
+            background: lightgray;
+            text-align: center;
+            padding-left: 200px;
+            padding-right: 200px;
+            margin-bottom: 100px;
+            opacity: 0.92;
+            filter: alpha(opacity=50); /* For IE8 and earlier */
+        }
+        div {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+<!-- Navar -->
+
+<div class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <h5 class="text-white h4">Crawling from walla</h5>
+            <span class="text-muted">get data from walla website</span>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
+                aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+</div>
+
+<!-- main headline -->
+
+<div id="mainTasks" class="jumbotron">
+    <h1 class="display-4">Crawling from walla</h1>
+    <p class="lead">Get data from walla website and display it on the page<br>
+    </p>
+    <hr class="my-4">
+    <p>Click to walla</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" href="https://www.walla.co.il/" role="button">Go</a>
+    </p>
+</div>
+
+
+<div id="tablediv"></div>
+
+
+
+<!--input-->
+
+<div class="custom-file">
+    <input type="file" class="custom-file-input"   id="fileInput" required >
+    <label class="custom-file-label" for="fileInput">Choose data from server output.txt</label>
+    <div class="invalid-feedback">Example invalid custom file feedback</div>
+  </div>
+
+
+<!--table-->
+
+<table class="table" id="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Time Stamp</th>
+      <th scope="col">Title</th>
+      <th scope="col">Article</th>
+      <th scope="col">Image</th>
+    </tr>
+  </thead>
+  <tbody id="content">
+  </tbody>
+</table>
+
+
+<script>
+
+    document.getElementById('fileInput').addEventListener('change', function selectedFileChanged() {
+  if (this.files.length === 0) {
+    console.log('No file selected.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function fileReadCompleted() {
+    // when the reader is done, the content is in reader.result.
+    displayContents(reader.result);
+    console.log(reader.result);
+  };
+  reader.readAsText(this.files[0]);
+});
+
+function displayContents(contents) {
+
+  var innerIndex=0;
+  var index = 0;
+  var newElement;
+  var lines = contents.split('\n');
+
+    for(var line = 0; line < lines.length; line+=5){
+
+      newElement = document.createElement("tr");
+      newElement.innerHTML += '<th scope="row">' + index + '</th>';
+
+      for (var i = line ; innerIndex < 4 ; i++){
+          if (innerIndex === 3)
+          {
+                newElement.innerHTML += "<img src=" + lines[i] + ">";
+                break;
+          }
+          if (lines[i] === '')
+                break;
+          newElement.innerHTML += "<td>" + lines[i] + "</td>";
+          innerIndex++;
+      }
+      document.getElementById("content").appendChild(newElement);
+    index++;
+    innerIndex=0;
+
+    }
+}
+</script>
+
+</body>
+</html>
